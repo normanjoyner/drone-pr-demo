@@ -3,6 +3,8 @@ build:
   commands:
     - npm install
     - npm test
+  when:
+    event: push
 
 publish:
   docker:
