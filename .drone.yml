@@ -1,0 +1,25 @@
+build:
+  image: library/node:6.0.0
+  commands:
+    - npm install
+    - npm test
+
+publish:
+  docker:
+    username: "$$DOCKERHUB_USERNAME"
+    password: "$$DOCKERHUB_PASSWORD"
+    email: "$$DOCKERHUB_EMAIL"
+    repo: containership/$$DRONE_REPO
+    tag: $$DRONE_PULL_REQUEST
+    when:
+      event: pull_request
+
+deploy:
+  containership:
+    organization: "$$CONTAINERSHIP_ORGANIZATION"
+    api_key: "$$CONTAINERSHIP_API_KEY"
+    cluster_id: "$$CONTAINERSHIP_CLUSTER_ID"
+    application: $$DRONE_REPO-$$DRONE_PULL_REQUEST
+    docker_image: containership/$$DRONE_REPO:$$DRONE_PULL_REQUEST
+    when:
+      event: pull_request
